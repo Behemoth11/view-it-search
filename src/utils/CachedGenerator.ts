@@ -1,4 +1,9 @@
-export default class CachedSearchGenerator<
+
+/**
+ * Wrapper around generator that caches it's return values and allows 
+ * to navigate navigator values;
+ */
+export default class CachedGenerator<
   TGenerator extends Generator<any, any, any>,
   T = TGenerator extends Generator<infer T, any, any> ? T : any,
   D = TGenerator extends Generator<any, infer T, any> ? T : any,
@@ -6,13 +11,13 @@ export default class CachedSearchGenerator<
 > {
   generatorIndex: number = 0;
   generatorCache: IteratorResult<T, D>[] = [];
-  constructor(private searchGenerator: Generator<T, D, P>) {}
+  constructor(private generator: Generator<T, D, P>) {}
 
   next() {
     this.generatorIndex++;
 
     if (!this.generatorCache[this.generatorIndex]) {
-      const nextYield = this.searchGenerator.next();
+      const nextYield = this.generator.next();
       this.cache(nextYield);
     }
 

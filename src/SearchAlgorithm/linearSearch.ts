@@ -1,4 +1,5 @@
 import { SearchGenerator, SearchGeneratorCreator } from "./SearchGenerator";
+
 export const linearSearch = function* (sortedArray: number[], target: number) {
   yield {
     boundaries: { low_bound: 0 },

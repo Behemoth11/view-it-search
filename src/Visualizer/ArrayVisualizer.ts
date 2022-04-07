@@ -1,10 +1,11 @@
 import { SearchGenerator, SearchGeneratorCreator } from "../SearchAlgorithm/SearchGenerator";
 import CachedSearchGenerator from "../utils/CachedGenerator";
-import ArrayBoundariesManager from "./ArrayBoundariesManager";
-import PointerManager from "./PointerManager";
-import ShadowManager from "./ShadowManager";
+import ArrayBoundariesManager from "../Renderer/ArrayBoundariesManager";
+import PointerManager from "../Renderer/PointerManager";
+import ShadowManager from "../Renderer/ShadowManager";
 
-export class SearchVisualizer {
+export class ArrayVisualizer<T> implements Visualizer {
+
   arrayAsHTML: HTMLDivElement[];
   searchAlgorithm: CachedSearchGenerator<SearchGenerator>;
 
@@ -14,7 +15,7 @@ export class SearchVisualizer {
   arrayBoundariesManager: ArrayBoundariesManager;
 
   constructor(
-    private array: number[],
+    private array: T[],
     private target: number,
     private containerId: string,
     private searchAlgorithmGenerator: SearchGeneratorCreator
@@ -30,8 +31,6 @@ export class SearchVisualizer {
     this.shadowManager = new ShadowManager(this.container);
     this.pointerManager = new PointerManager(this.container);
     this.arrayBoundariesManager = new ArrayBoundariesManager(this.container);
-
-    //
   }
 
   setArray(array: number[]) {
@@ -106,11 +105,10 @@ export class SearchVisualizer {
   private render({ pointers, boundaries, shadows }: any) {
     if (shadows) this.shadowManager.display(shadows, this.arrayAsHTML);
     if (pointers) this.pointerManager.display(pointers, this.arrayAsHTML);
-    if (boundaries)
-      this.arrayBoundariesManager.display(boundaries, this.arrayAsHTML);
+    if (boundaries) this.arrayBoundariesManager.display(boundaries, this.arrayAsHTML);
   }
 
-  private createNodeForIndex(idx: number): HTMLDivElement {
+  private createNodeForIndex(idx: T): HTMLDivElement {
     let number_div = document.createElement("div");
     number_div.classList.add("number");
     number_div.innerHTML = `${idx}`;

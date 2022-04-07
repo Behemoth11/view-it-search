@@ -1,6 +1,6 @@
 import { implementedAlgorithm } from "../main";
 import { binarySearch } from "../SearchAlgorithm/binarySearch";
-import { SearchVisualizer } from "./SearchVisualizer";
+import { SearchVisualizer } from "../Visualizer/ArrayVisualizer";
 
 const nameMap = {
   funkySearch: "Double linear",
@@ -36,8 +36,8 @@ export default class Renderer {
       this.container.appendChild(container);
 
       let searchVisualizer = new SearchVisualizer(
-        [5, 12, 45, 56],
-        12,
+        [],
+        null,
         "container_" + name,
         binarySearch
       );
@@ -97,4 +97,5 @@ export default class Renderer {
       this.activeVisualizers[algorithm].setIndex(index);
     });
   }
+
 }
