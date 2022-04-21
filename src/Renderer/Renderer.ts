@@ -8,19 +8,13 @@ type Visualization = {
 };
 
 export default class Renderer {
-  visualizations: ObjectMap<string, Visualization> = {};
+  frames: ObjectMap<string, Frame> = {};
   executionTracker: number = 0;
 
   constructor(private container: HTMLDivElement) {}
 
-  getVisualizer(name: string): Visualizer {
-    let visualizer = this.visualizers[name];
-
-    return visualizer || null;
-  }
-
-  addVisualization(label: HTMLElement, visualizer: Visualizer) {
-    this.visualizations[label] = {};
+  addFrame(frame: Frame): void {
+    this.frames[frame.label] = frame;
   }
 
   /**
@@ -45,29 +39,23 @@ export default class Renderer {
   // }
 
   moveBackward() {
-    this.forEachVisualization((visualization) =>
-      visualization.visualizer.moveBackward()
-    );
+    this.forEachFrame((forEachFrame) => forEachFrame.visualizer.moveBackward());
   }
 
-  private forEachVisualization(cb: (visualizers: Visualization) => void) {
-    Object.values(this.visualizations).forEach(cb);
+  private forEachFrame(cb: (frame: Frame) => void) {
+    Object.values(this.frames).forEach(cb);
   }
 
   moveForward() {
     let hasMoved = false;
     // You may want to changed the as moved method here;
 
-    this.forEachVisualization((visualization) =>
-      visualization.visualizer.moveForward()
-    );
+    this.forEachFrame((forEachFrame) => forEachFrame.visualizer.moveForward());
 
     return hasMoved;
   }
 
   syncVisualizersAtIndex(index: number) {
-    this.forEachVisualization((visualization) =>
-      visualization.visualizer.setIndex(index)
-    );
+    this.forEachFrame((frame) => frame.visualizer.setIndex(index));
   }
 }

@@ -13,7 +13,7 @@ import ArrayBoundariesManager from "./helpers/ArrayBoundariesManager";
 export class LinearVisualizer<T extends number | string >
   implements Visualizer
 {
-  arrayAsHTML: HTMLDivElement[];
+  arrayAsHTML: HTMLElement[];
   searchAlgorithm: CachedSearchGenerator<LinearGenerator<T>>;
 
   arrayManager: ArrayManager<T>;
@@ -22,7 +22,7 @@ export class LinearVisualizer<T extends number | string >
   arrayBoundariesManager: ArrayBoundariesManager;
 
   constructor(
-    private container: HTMLDivElement,
+    private container: HTMLElement,
     generator: LinearGenerator<T>
   ) {
     this.searchAlgorithm = new CachedSearchGenerator(generator);

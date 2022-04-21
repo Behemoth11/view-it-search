@@ -10,7 +10,7 @@
  */
 export default function getBoundingClientRectAtIndex(
   idx: number,
-  arrayAsHTML: HTMLDivElement[]
+  arrayAsHTML: HTMLElement[]
 ) {
   if (idx >= arrayAsHTML.length) {
     let lastRect = arrayAsHTML[arrayAsHTML.length - 1]?.getBoundingClientRect();

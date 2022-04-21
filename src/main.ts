@@ -132,7 +132,7 @@ let renderer = new Renderer(visualizationCanvas);
 
 let frame = renderer.getFrame("First algorithm");
 
-let linear = new LinearArray.Visualizer(frame, Algorithm.linearSearch([5,2,9,4,5], 5) )
+frame.visualizer = new LinearArray.Visualizer(frame.container, Algorithm.linearSearch([5,2,9,4,5], 5) )
 
 
-renderer.addVisualization(frame, linear )
+renderer.addVisualization("First algorithm", linear )
