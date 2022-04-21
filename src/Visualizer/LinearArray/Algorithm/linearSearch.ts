@@ -1,6 +1,9 @@
-import { SearchGenerator, SearchGeneratorCreator } from "./SearchGenerator";
+import { LinearGeneratorCreator } from "../Generator";
 
-export const linearSearch = function* (sortedArray: number[], target: number) {
+export const linearSearch: LinearGeneratorCreator<number> = function* (
+  sortedArray: number[],
+  target: number
+) {
   yield {
     boundaries: { low_bound: 0 },
     shadows: {
@@ -25,4 +28,4 @@ export const linearSearch = function* (sortedArray: number[], target: number) {
   }
 
   return -1;
-} as SearchGeneratorCreator;
+};

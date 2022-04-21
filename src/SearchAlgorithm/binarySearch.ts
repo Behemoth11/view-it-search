@@ -1,4 +1,5 @@
-export const binarySearch: any = function* (sortedArray: number[], target: number) {
+
+export const binarySearch = function* (sortedArray: number[], target: number) {
     let low_bound = 0;
     let right_bound = sortedArray.length - 1;
 
@@ -11,6 +12,7 @@ export const binarySearch: any = function* (sortedArray: number[], target: numbe
           span: 0,
         },
       },
+      array : [ 1, 2, 3]
     };
 
     while (low_bound <= right_bound) {

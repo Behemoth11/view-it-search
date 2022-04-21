@@ -1,101 +1,73 @@
-import { implementedAlgorithm } from "../main";
-import { binarySearch } from "../SearchAlgorithm/binarySearch";
-import { SearchVisualizer } from "../Visualizer/ArrayVisualizer";
+import { ObjectMap } from "../utils/generict.type";
+import { Visualizer } from "../Visualizer/index";
+import Frame from "./Frame";
 
-const nameMap = {
-  funkySearch: "Double linear",
-  linearSearch: "Linear search",
-  binarySearch: "Binary search",
-  justGoingForIt: "Random indexing",
-  AtLeastIamTrying: "Random indexing + caching",
+type Visualization = {
+  visualizer: Visualizer;
+  container: HTMLElement;
 };
 
-
-
 export default class Renderer {
-  activeVisualizers: { [key: string]: SearchVisualizer } = {};
-  labels: { [keys: string]: HTMLElement } = {};
-
+  visualizations: ObjectMap<string, Visualization> = {};
   executionTracker: number = 0;
 
   constructor(private container: HTMLDivElement) {}
 
-  getSearchVisualizer(name: keyof typeof nameMap): SearchVisualizer {
-    let visualizer = this.activeVisualizers[name];
+  getVisualizer(name: string): Visualizer {
+    let visualizer = this.visualizers[name];
 
-    if (!visualizer) {
-      const container = document.createElement("div");
-      container.id = "container_" + name;
-      container.classList.add("container");
-
-      const label = document.createElement("label");
-      label.classList.add("algorithm-label");
-      label.textContent = nameMap[name];
-
-      this.container.appendChild(label);
-      this.container.appendChild(container);
-
-      let searchVisualizer = new SearchVisualizer(
-        [],
-        null,
-        "container_" + name,
-        binarySearch
-      );
-
-      searchVisualizer.init();
-
-      this.labels[name] = label;
-      this.activeVisualizers[name] = searchVisualizer;
-    }
-
-    return this.activeVisualizers[name];
+    return visualizer || null;
   }
 
-  render(array: number[], target: number, algorithms: (keyof typeof nameMap)[], ) {
-    const preserved: { [key: string]: boolean } = {};
-
-    algorithms.forEach((name) => {
-      preserved[name] = true;
-      const visualizer = this.getSearchVisualizer(name);
-
-      visualizer.setArray(array);
-      visualizer.setTarget(target);
-      visualizer.setSearchAlgorithm(implementedAlgorithm[name]);
-    });
-
-    this.clean(preserved);
+  addVisualization(label: HTMLElement, visualizer: Visualizer) {
+    this.visualizations[label] = {};
   }
 
-  clean(preserve: { [key: string]: boolean }) {
-    Object.keys(this.activeVisualizers).forEach((algorithm) => {
-      if (!preserve[algorithm]) {
-        this.activeVisualizers[algorithm].terminate();
-        delete this.activeVisualizers[algorithm];
+  /**
+   * Create and returns a safe subspace for visualization rendering
+   */
+  getFrame(label: string) {
+    const frame = document.createElement("div");
+    frame.classList.add("frame");
 
-        this.labels[algorithm].remove();
-      }
-    });
+    return new Frame(frame, label);
   }
+
+  // clean(preserve: { [key: string]: boolean }) {
+  //   Object.keys(this.visualizers).forEach((algorithm) => {
+  //     if (!preserve[algorithm]) {
+  //       this.visualizers[algorithm].terminate();
+  //       delete this.visualizers[algorithm];
+
+  //       this.labels[algorithm].remove();
+  //     }
+  //   });
+  // }
 
   moveBackward() {
-    Object.keys(this.activeVisualizers).forEach((algorithm) => {
-      this.activeVisualizers[algorithm].moveBackward();
-    });
+    this.forEachVisualization((visualization) =>
+      visualization.visualizer.moveBackward()
+    );
+  }
+
+  private forEachVisualization(cb: (visualizers: Visualization) => void) {
+    Object.values(this.visualizations).forEach(cb);
   }
 
   moveForward() {
     let hasMoved = false;
-    Object.keys(this.activeVisualizers).forEach((algorithm) => {
-      if (this.activeVisualizers[algorithm].moveForward()) hasMoved = true;
-    });
+    // You may want to changed the as moved method here;
+
+    this.forEachVisualization((visualization) =>
+      visualization.visualizer.moveForward()
+    );
 
     return hasMoved;
   }
 
   syncVisualizersAtIndex(index: number) {
-    Object.keys(this.activeVisualizers).forEach((algorithm) => {
-      this.activeVisualizers[algorithm].setIndex(index);
-    });
+    this.forEachVisualization((visualization) =>
+      visualization.visualizer.setIndex(index)
+    );
   }
-
 }
