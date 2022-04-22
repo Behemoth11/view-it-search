@@ -24,7 +24,7 @@ const arrayLength = new SingleFieldInputHandler("length-input", "9");
 //   binarySearch: true,
 //   funkySearch: true,
 // });
-// const target = new SingleFieldInputHandler("target-input", "3");
+const target = new SingleFieldInputHandler("target-input", "3");
 
 // const visualizationCanvas = document.getElementById(
 //   "visualization-canvas"
@@ -45,8 +45,6 @@ const arrayLength = new SingleFieldInputHandler("length-input", "9");
 // };
 
 // algorithmType.addEventListener("change", update);
-
-// target.onChange = update;
 
 // update();
 
@@ -82,16 +80,7 @@ const controls = new ExecutionControl(renderer).bindTo(
   document.getElementById("run-pause") as HTMLElement
 );
 
-let frame = renderer
-  .createFrame("First algorithm")
-  .init()
-  .setVisualizer(
-    (container) =>
-      new LinearArray.Visualizer(
-        container,
-        Algorithm.linearSearch([5, 2, 9, 4, 5, 8, 7, 10, 12, 65, 98], 65)
-      )
-  );
+let frame = renderer.createFrame("First algorithm").init();
 
 document.getElementById("run-algorithm")?.addEventListener("click", () => {
   controls.execute();
@@ -114,18 +103,22 @@ document.getElementById("reset-algorithm")?.addEventListener("click", () => {
 });
 
 const update = () => {
-  renderer.moveToIndex(1);
-
   renderer
     .getFrame("First algorithm")
     .setVisualizer(
       (container) =>
         new LinearArray.Visualizer(
           container,
-          Algorithm.linearSearch(getArray(arrayInput.value), 65)
+          Algorithm.linearSearch(
+            getArray(arrayInput.value),
+            parseInt(target.value)
+          )
         )
     );
+  renderer.moveToIndex(1);
 };
+
+target.onChange = update;
 
 {
   arrayInput.onChange = function (e?: Event) {
@@ -153,3 +146,5 @@ const update = () => {
 window.addEventListener("resize", () => {
   setTimeout(() => renderer.rerender(), 1000);
 });
+
+update();
