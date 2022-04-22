@@ -6,7 +6,7 @@
 export interface Visualizer {
   init(): void;
   terminate(): void;
-  moveForward(): void;
-  moveBackward(): void;
+  moveForward(): boolean;
+  moveBackward(): boolean;
   setIndex(index: number): void;
 }

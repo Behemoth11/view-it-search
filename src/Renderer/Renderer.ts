@@ -58,8 +58,9 @@ export default class Renderer {
     // You may want to changed the as moved method here;
 
     this.forEachFrame((forEachFrame) => {
-      forEachFrame.getVisualizer().moveForward();
-      this
+      if (forEachFrame.getVisualizer().moveForward()) {
+        hasMoved = true;
+      }
     });
 
     return hasMoved;
