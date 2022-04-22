@@ -42,15 +42,23 @@ export default class Renderer {
   getFrame(label: string) {
     return this.frames[label] || null;
   }
+
   removeFrame(label: string) {
     let frame = this.frames[label];
     frame.destroy();
   }
 
   moveBackward() {
-    this.forEachFrame((forEachFrame) =>
-      forEachFrame.getVisualizer().moveBackward()
-    );
+    let hasMoved = false;
+    // You may want to changed the as moved method here;
+
+    this.forEachFrame((forEachFrame) => {
+      if (forEachFrame.getVisualizer().moveBackward()) {
+        hasMoved = true;
+      }
+    });
+
+    return hasMoved;
   }
 
   moveForward() {
@@ -64,6 +72,12 @@ export default class Renderer {
     });
 
     return hasMoved;
+  }
+
+  rerender(): void {
+    this.forEachFrame((forEachFrame) => {
+      forEachFrame.getVisualizer().rerender();
+    });
   }
 
   moveToIndex(index: number) {

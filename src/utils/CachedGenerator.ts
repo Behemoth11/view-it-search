@@ -32,6 +32,7 @@ export default class CachedGenerator<
   }
 
   getIndex(index: number) {
+
     if (this.generatorCache[index] === undefined) {
       if (index < this.generatorIndex) this.generatorIndex = 0;
 
@@ -39,8 +40,7 @@ export default class CachedGenerator<
         this.next();
       }
     }
-
-    // console.log(index, this.generatorCache[index]);
+    
     return this.generatorCache[index];
   }
 

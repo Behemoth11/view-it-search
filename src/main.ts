@@ -11,40 +11,20 @@ import Algorithm from "./Visualizer/LinearArray/Algorithm/index";
 import { linearSearch } from "./Visualizer/LinearArray/Algorithm/linearSearch";
 import LinearArray from "./Visualizer/LinearArray/index";
 
-// const arrayInput = new SingleFieldInputHandler(
-//   "array-input",
-//   "1 2 3 4 5 6 7 8 9"
-// );
+// Input controlling the content of the array
+const arrayInput = new SingleFieldInputHandler(
+  "array-input",
+  "1 2 3 4 5 6 7 8 9"
+);
+
+// Input controlling the length of the array
+const arrayLength = new SingleFieldInputHandler("length-input", "9");
 
 // const algorithmType = new CheckboxInputHandler("search-algorithm", {
 //   binarySearch: true,
 //   funkySearch: true,
 // });
 // const target = new SingleFieldInputHandler("target-input", "3");
-// const arrayLength = new SingleFieldInputHandler("length-input", "9");
-
-// function SyncLengthToArray() {
-//   arrayInput.onChange = function (e?: Event) {
-//     arrayLength.value = getArray(arrayInput.value).length + "";
-//     update();
-//   };
-
-//   arrayLength.onChange = function (e?: Event) {
-//     let newArray = getArray(arrayInput.value);
-//     let desiredLength = parseInt(arrayLength.value);
-
-//     if (desiredLength < newArray.length) {
-//       newArray = newArray.slice(0, desiredLength);
-//     } else if (desiredLength > newArray.length) {
-//       while (desiredLength > newArray.length) {
-//         newArray.push(newArray[newArray.length - 1] + getRandomInt(3, 5));
-//       }
-//     }
-
-//     arrayInput.value = newArray.join(" ");
-//     update();
-//   };
-// }
 
 // const visualizationCanvas = document.getElementById(
 //   "visualization-canvas"
@@ -64,19 +44,9 @@ import LinearArray from "./Visualizer/LinearArray/index";
 //   );
 // };
 
-// const update = () => {
-//   renderer.moveForward();
-// };
-
 // algorithmType.addEventListener("change", update);
 
 // target.onChange = update;
-
-// document.getElementById("reset-algorithm")?.addEventListener("click", () => {
-//   renderer.clean({});
-//   update();
-// });
-// SyncLengthToArray();
 
 // update();
 
@@ -132,10 +102,54 @@ document.getElementById("rewind-algorithm")?.addEventListener("click", () => {
 });
 
 document.getElementById("pause-algorithm")?.addEventListener("click", () => {
-
   controls.stopExecution();
 });
 
 document.getElementById("advance-algorithm")?.addEventListener("click", () => {
   renderer.moveForward();
+});
+
+document.getElementById("reset-algorithm")?.addEventListener("click", () => {
+  renderer.moveToIndex(1);
+});
+
+const update = () => {
+  renderer.moveToIndex(1);
+
+  renderer
+    .getFrame("First algorithm")
+    .setVisualizer(
+      (container) =>
+        new LinearArray.Visualizer(
+          container,
+          Algorithm.linearSearch(getArray(arrayInput.value), 65)
+        )
+    );
+};
+
+{
+  arrayInput.onChange = function (e?: Event) {
+    arrayLength.value = getArray(arrayInput.value).length + "";
+    update();
+  };
+
+  arrayLength.onChange = function (e?: Event) {
+    let newArray = getArray(arrayInput.value);
+    let desiredLength = parseInt(arrayLength.value);
+
+    if (desiredLength < newArray.length) {
+      newArray = newArray.slice(0, desiredLength);
+    } else if (desiredLength > newArray.length) {
+      while (desiredLength > newArray.length) {
+        newArray.push(newArray[newArray.length - 1] + getRandomInt(3, 5));
+      }
+    }
+
+    arrayInput.value = newArray.join(" ");
+    update();
+  };
+}
+
+window.addEventListener("resize", () => {
+  setTimeout(() => renderer.rerender(), 1000);
 });

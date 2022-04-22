@@ -4,7 +4,9 @@
  * new search visualization
  */
 export interface Visualizer {
+
   init(): void;
+  rerender(): void;
   terminate(): void;
   moveForward(): boolean;
   moveBackward(): boolean;

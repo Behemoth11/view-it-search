@@ -61,6 +61,7 @@ export class LinearVisualizer<T extends number | string> implements Visualizer {
 
   refresh() {
     const value = this.searchAlgorithm.current?.value;
+    console.log ( " the value", value)
     if (!value || typeof value !== "object") return;
 
     this.render(value);
@@ -84,5 +85,9 @@ export class LinearVisualizer<T extends number | string> implements Visualizer {
 
     if (boundaries)
       this.arrayBoundariesManager.display(boundaries,this.arrayManager.getArrayAsHTML());
+  }
+
+  rerender(){
+    this.refresh();
   }
 }

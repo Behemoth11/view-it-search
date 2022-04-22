@@ -6,31 +6,33 @@ export const linearSearch: LinearGeneratorCreator<number> = function* (
 ) {
   let display: ArrayKeyDescriptor<number>[] = sortedArray;
   display = display.map((number) => {
-
     if (number === target) {
       return {
-        style: { color: "white" , backgroundColor: "rgb(96, 229, 96)"},
+        style: { color: "white", backgroundColor: "rgb(96, 229, 96)" },
         content: number,
       };
     } else {
       return number;
     }
   });
+
   yield {
     boundaries: { low_bound: 0 },
     shadows: {
       left_side: { start: 0, span: 0 },
     },
 
+    pointers: { middle: 0 },
     array: display,
   };
 
   for (let i = 0; i < sortedArray.length; i++) {
-    yield {
-      pointers: {
-        middle: i,
-      },
-    };
+    if (i !== 0)
+      yield {
+        pointers: {
+          middle: i,
+        },
+      };
 
     if (sortedArray[i] === target) return i;
     yield {
