@@ -1,14 +1,9 @@
-import { CheckboxInputHandler } from "./Components/CheckBoxInputHandler";
 import { SingleFieldInputHandler } from "./Components/SingleFieldInputHandler";
 import { ExecutionControl } from "./Renderer/ExecutionControls";
 import Renderer from "./Renderer/Renderer";
-import { binarySearch } from "./SearchAlgorithm/binarySearch";
-import { funkySearch } from "./SearchAlgorithm/doubleLinear";
-import justGoingForIt from "./SearchAlgorithm/randomSearch";
 import { getArray } from "./utils/getArray";
 import { getRandomInt } from "./utils/getRandomInt";
 import Algorithm from "./Visualizer/LinearArray/Algorithm/index";
-import { linearSearch } from "./Visualizer/LinearArray/Algorithm/linearSearch";
 import LinearArray from "./Visualizer/LinearArray/index";
 
 // Input controlling the content of the array
@@ -80,7 +75,8 @@ const controls = new ExecutionControl(renderer).bindTo(
   document.getElementById("run-pause") as HTMLElement
 );
 
-let frame = renderer.createFrame("First algorithm").init();
+renderer.createFrame("Linear Search").init();
+renderer.createFrame("Binary Search").init();
 
 document.getElementById("run-algorithm")?.addEventListener("click", () => {
   controls.execute();
@@ -103,8 +99,9 @@ document.getElementById("reset-algorithm")?.addEventListener("click", () => {
 });
 
 const update = () => {
+
   renderer
-    .getFrame("First algorithm")
+    .getFrame("Linear Search")
     .setVisualizer(
       (container) =>
         new LinearArray.Visualizer(
@@ -115,6 +112,20 @@ const update = () => {
           )
         )
     );
+
+  renderer
+    .getFrame("Binary Search")
+    .setVisualizer(
+      (container) =>
+        new LinearArray.Visualizer(
+          container,
+          Algorithm.binarySearch(
+            getArray(arrayInput.value),
+            parseInt(target.value)
+          )
+        )
+    );
+
   renderer.moveToIndex(1);
 };
 
@@ -144,7 +155,7 @@ target.onChange = update;
 }
 
 window.addEventListener("resize", () => {
-  setTimeout(() => renderer.rerender(), 1000);
+  setTimeout(() => renderer.rerender(), 200);
 });
 
 update();

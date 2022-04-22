@@ -5,6 +5,7 @@ export default class ShadowManager {
   constructor(private container: HTMLElement) {}
 
   getDomShadow(name: string) {
+    console.log ( " The name ", name)
     name = "shadow_" + name;
     const shadow = this.shadows[name];
 
@@ -26,7 +27,16 @@ export default class ShadowManager {
     shadows: { [key: string]: { start: number; span: number } },
     arrayAsHTML: HTMLElement[]
   ) {
-    
+
+    for (const previousShadowId in this.shadows){
+      let shadowName = previousShadowId.split("shadow_")[1];
+      if (!shadows[shadowName]){
+        
+        shadows[shadowName] = { start: 0, span: 0,}
+      }
+
+    }
+
     for (const shadowId in shadows) {
       const { start, span } = shadows[shadowId];
 
@@ -42,5 +52,7 @@ export default class ShadowManager {
       shadow.style.transform = `translateX(${rect1.x - container.x}px)`;
       shadow.style.width = rect2.x - rect1.x + "px";
     }
+
+
   }
 }
