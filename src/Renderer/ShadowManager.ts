@@ -1,8 +1,8 @@
 import getBoundingClientRectAtIndex from "../utils/getBoundingClientRectAtIndex";
 
 export default class ShadowManager {
-    shadows: { [key: string]: HTMLDivElement } = {};
-    constructor(private container: HTMLDivElement) {}
+    shadows: { [key: string]: HTMLElement } = {};
+    constructor(private container: HTMLElement) {}
 
     getDomShadow(name: string) {
       name = "shadow_" + name;
@@ -26,7 +26,7 @@ export default class ShadowManager {
 
     display(
       shadows: { [key: string]: { start: number; span: number } },
-      arrayAsHTML: HTMLDivElement[]
+      arrayAsHTML: HTMLElement[]
     ) {
       for (const shadowId in shadows) {
         const { start, span } = shadows[shadowId];

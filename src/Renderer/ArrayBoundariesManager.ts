@@ -5,8 +5,8 @@ import getBoundingClientRectAtIndex from "../utils/getBoundingClientRectAtIndex"
  * for the arrayVisualizer
  */
  export default class ArrayBoundariesManager {
-    boundaries: { [key: string]: HTMLDivElement } = {};
-    constructor(private container: HTMLDivElement) {}
+    boundaries: { [key: string]: HTMLElement } = {};
+    constructor(private container: HTMLElement) {}
 
     /**
      * Returns the bound with specified name that should be used for boundaries update;
@@ -41,7 +41,7 @@ import getBoundingClientRectAtIndex from "../utils/getBoundingClientRectAtIndex"
      */
     display(
       boundaries: { [key: string]: number },
-      arrayAsHTML: HTMLDivElement[]
+      arrayAsHTML: HTMLElement[]
     ) {
       for (const key in boundaries) {
         const idx = boundaries[key];

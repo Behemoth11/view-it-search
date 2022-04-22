@@ -10,21 +10,15 @@ import ShadowManager from "./helpers/ShadowManager";
 import PointerManager from "./helpers/PointerManager";
 import ArrayBoundariesManager from "./helpers/ArrayBoundariesManager";
 
-export class LinearVisualizer<T extends number | string >
-  implements Visualizer
-{
-  arrayAsHTML: HTMLElement[];
+export class LinearVisualizer<T extends number | string> implements Visualizer {
   searchAlgorithm: CachedSearchGenerator<LinearGenerator<T>>;
 
-  arrayManager: ArrayManager<T>;
+  arrayManager: ArrayManager;
   shadowManager: ShadowManager;
   pointerManager: PointerManager;
   arrayBoundariesManager: ArrayBoundariesManager;
 
-  constructor(
-    private container: HTMLElement,
-    generator: LinearGenerator<T>
-  ) {
+  constructor(private container: HTMLElement, generator: LinearGenerator<T>) {
     this.searchAlgorithm = new CachedSearchGenerator(generator);
 
     this.arrayManager = new ArrayManager(this.container);
@@ -33,7 +27,7 @@ export class LinearVisualizer<T extends number | string >
     this.arrayBoundariesManager = new ArrayBoundariesManager(this.container);
   }
 
-  setGenerator(generator: SearchGenerator<IndexType < T> >) {
+  setGenerator(generator: SearchGenerator<IndexType<T>>) {
     this.searchAlgorithm = new CachedSearchGenerator(generator);
 
     this.refresh();
@@ -78,13 +72,17 @@ export class LinearVisualizer<T extends number | string >
   }
 
   private render({ pointers, boundaries, shadows, array }: any) {
-    if (array) {
+    
+    if (array) 
       this.arrayManager.display(array);
-    }
 
-    if (shadows) this.shadowManager.display(shadows, this.arrayAsHTML);
-    if (pointers) this.pointerManager.display(pointers, this.arrayAsHTML);
+    if (shadows)
+      this.shadowManager.display(shadows, this.arrayManager.getArrayAsHTML());
+
+    if (pointers)
+      this.pointerManager.display(pointers, this.arrayManager.getArrayAsHTML());
+
     if (boundaries)
-      this.arrayBoundariesManager.display(boundaries, this.arrayAsHTML);
+      this.arrayBoundariesManager.display(boundaries,this.arrayManager.getArrayAsHTML());
   }
 }

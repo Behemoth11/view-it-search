@@ -1,6 +1,5 @@
-
 /**
- * Wrapper around generator that caches it's return values and allows 
+ * Wrapper around generator that caches it's return values and allows
  * to navigate navigator values;
  */
 export default class CachedGenerator<
@@ -41,6 +40,7 @@ export default class CachedGenerator<
       }
     }
 
+    // console.log(index, this.generatorCache[index]);
     return this.generatorCache[index];
   }
 
@@ -49,7 +49,17 @@ export default class CachedGenerator<
   }
 
   cache(value: IteratorResult<T, D>) {
-    this.generatorCache[this.generatorIndex] = value;
+
+    this.generatorCache[this.generatorIndex] = { done: true , value: undefined };
+
+
+    this.current.value = Object.assign(
+      {},
+      this.generatorCache[this.generatorIndex - 1]?.value,
+      value?.value
+    );
+
+    this.current.done = value.done;
 
     // could be written in one line as
     // this.generatorCache[this.generatorIndex++] = value;

@@ -1,11 +1,11 @@
 export default class PointerManager {
-    pointers: { [key: string]: HTMLDivElement } = {};
+    pointers: { [key: string]: HTMLElement } = {};
     arrayPointer: HTMLElement;
 
-    constructor(private container: HTMLDivElement) {
+    constructor(private container: HTMLElement) {
       this.arrayPointer = document.getElementById(
         "array-pointer"
-      ) as HTMLDivElement;
+      ) as HTMLElement;
     }
 
     getDomPointer(name: string) {
@@ -30,7 +30,7 @@ export default class PointerManager {
       return pointer;
     }
 
-    display(pointers: { [key: string]: number }, arrayAsHTML: HTMLDivElement[]) {
+    display(pointers: { [key: string]: number }, arrayAsHTML: HTMLElement[]) {
       for (const pointer_id in pointers) {
         let pointer_location = pointers[pointer_id];
         let pointer = this.getDomPointer(pointer_id);

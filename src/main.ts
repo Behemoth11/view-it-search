@@ -11,7 +11,6 @@ import Algorithm from "./Visualizer/LinearArray/Algorithm/index";
 import { linearSearch } from "./Visualizer/LinearArray/Algorithm/linearSearch";
 import LinearArray from "./Visualizer/LinearArray/index";
 
-
 // const arrayInput = new SingleFieldInputHandler(
 //   "array-input",
 //   "1 2 3 4 5 6 7 8 9"
@@ -49,7 +48,7 @@ import LinearArray from "./Visualizer/LinearArray/index";
 
 // const visualizationCanvas = document.getElementById(
 //   "visualization-canvas"
-// ) as HTMLDivElement;
+// ) as HTMLElement;
 // let renderer = new Renderer(visualizationCanvas);
 
 // export const implementedAlgorithm = {
@@ -73,10 +72,6 @@ import LinearArray from "./Visualizer/LinearArray/index";
 
 // target.onChange = update;
 
-// const controls = new ExecutionControl(renderer).bindTo(
-//   document.getElementById("run-pause") as HTMLDivElement
-// );
-
 // document.getElementById("reset-algorithm")?.addEventListener("click", () => {
 //   renderer.clean({});
 //   update();
@@ -84,22 +79,6 @@ import LinearArray from "./Visualizer/LinearArray/index";
 // SyncLengthToArray();
 
 // update();
-
-// document.getElementById("run-algorithm")?.addEventListener("click", () => {
-//   controls.execute();
-// });
-
-// document.getElementById("rewind-algorithm")?.addEventListener("click", () => {
-//   renderer.moveBackward();
-// });
-
-// document.getElementById("pause-algorithm")?.addEventListener("click", () => {
-//   controls.stopExecution();
-// });
-
-// document.getElementById("advance-algorithm")?.addEventListener("click", () => {
-//   renderer.moveForward();
-// });
 
 // document
 //   .getElementById("randomize-algorithm")
@@ -124,15 +103,39 @@ import LinearArray from "./Visualizer/LinearArray/index";
 
 const visualizationCanvas = document.getElementById(
   "visualization-canvas"
-) as HTMLDivElement;
-
+) as HTMLElement;
 
 let renderer = new Renderer(visualizationCanvas);
 
+// creation of a controller to serve as an interface between the ui and the renderer;
+const controls = new ExecutionControl(renderer).bindTo(
+  document.getElementById("run-pause") as HTMLElement
+);
 
-let frame = renderer.getFrame("First algorithm");
+let frame = renderer
+  .createFrame("First algorithm")
+  .init()
+  .setVisualizer(
+    (container) =>
+      new LinearArray.Visualizer(
+        container,
+        Algorithm.linearSearch([5, 2, 9, 4, 5, 8, 7, 10, 12, 65, 98], 65)
+      )
+  );
 
-frame.visualizer = new LinearArray.Visualizer(frame.container, Algorithm.linearSearch([5,2,9,4,5], 5) )
+document.getElementById("run-algorithm")?.addEventListener("click", () => {
+  controls.execute();
+});
 
+document.getElementById("rewind-algorithm")?.addEventListener("click", () => {
+  renderer.moveBackward();
+});
 
-renderer.addVisualization("First algorithm", linear )
+document.getElementById("pause-algorithm")?.addEventListener("click", () => {
+
+  controls.stopExecution();
+});
+
+document.getElementById("advance-algorithm")?.addEventListener("click", () => {
+  renderer.moveForward();
+});

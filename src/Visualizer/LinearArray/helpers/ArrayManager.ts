@@ -1,12 +1,19 @@
-import { create } from "domain";
+
 import { ArrayKeyDescriptor } from "../Generator";
 
-export default class ArrayManager<T extends string | number> {
+export default class ArrayManager {
   private arrayAsHTML: HTMLElement[];
 
+  private array: (number | string ) []
   constructor( private container: HTMLElement){}
 
-  display( array: ArrayKeyDescriptor<T>[]) {
+  display( array: (number | string ) []) {
+    
+    if ( this.array === array) { return }
+    
+    else {
+      this.array = array;
+    }
     
     this.arrayAsHTML = [];
     this.container.innerHTML = ""
@@ -26,20 +33,18 @@ export default class ArrayManager<T extends string | number> {
     return this.arrayAsHTML;
   }
 
+
+
   setContainer(container: HTMLElement) {
     this.container = container;
   }
-
-  /**
-   * Rerenders all array content
-   */
 
 
   /**
    * Generate a DOM node to represent the given key
    */
-  private createNode(node: ArrayKeyDescriptor<T>): HTMLDivElement {
-    let content = node;
+  private createNode(node: ArrayKeyDescriptor< number | string > ): HTMLElement {
+    let content = node as string | number;
     let style: Partial<CSSStyleDeclaration> = {};
 
     if (typeof node === "object") {
@@ -49,7 +54,7 @@ export default class ArrayManager<T extends string | number> {
 
     let number_div = document.createElement("div");
     number_div.classList.add("number");
-    number_div.innerHTML = `${node}`;
+    number_div.innerHTML = `${content}`;
 
     let number_container = document.createElement("div");
     number_container.classList.add("number-container");

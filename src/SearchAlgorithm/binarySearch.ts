@@ -1,6 +1,8 @@
 
 export const binarySearch = function* (sortedArray: number[], target: number) {
     let low_bound = 0;
+
+    
     let right_bound = sortedArray.length - 1;
 
     yield {

@@ -19,11 +19,10 @@ export type RenderConfig<T> = {
     };
   };
 
-  array?: T[];
+  array?: ArrayKeyDescriptor<T>[];
   pointers?: ObjectMap<string, number>;
   boundaries?: ObjectMap<string, number>;
 };
-
 
 /**
  * Given a render config types, it returns the type of its indexes
@@ -36,5 +35,5 @@ export type ArrayKeyDescriptor<T> = T | AdvancedArrayKeyDescriptor<T>;
 
 type AdvancedArrayKeyDescriptor<T> = {
   content: T;
-  style: CSSStyleDeclaration;
+  style: Partial < CSSStyleDeclaration > ;
 };
